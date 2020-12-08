@@ -5,12 +5,22 @@ enum Animals(
     COW => 6*2*3,
     HORSE => 6*2*3*2,
     WOLF => -2,
-    FOX => -1
+    FOX => -1,
+    SMALL_DOG => 6,
+    BIG_DOG => 6*2*3
 );
 
-class Player{}
+role Player{}
 
-class LiveStock{}
+class LiveStock{
+    has @rabbits = RABBIT x 60;
+    has $sheeps =  SHEEP x 24;
+    has $swines = SWINE x 20;
+    has $horses = HORSE x 6;
+
+    has $small_dogs = SMALL_DOG x 4;
+    has $big_dogs = BIG_DOG x 2;
+}
 
 sub roll12 {
     return rand * 12;
@@ -68,4 +78,5 @@ class SuperFarmer {
     has BlueDice $.bluedice = BlueDice.new;
 }
 
-say BlueDice.new().roll.value;
+say BlueDice.new().roll;
+say OrangeDice.new().roll;
