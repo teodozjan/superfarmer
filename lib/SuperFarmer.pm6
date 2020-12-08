@@ -1,4 +1,12 @@
-enum Animals<RABBIT SHEEP SWINE COW HORSE WOLF FOX>;
+enum Animals(
+    RABBIT => 1,
+    SHEEP => 6,
+    SWINE => 6*2,
+    COW => 6*2*3,
+    HORSE => 6*2*3*2,
+    WOLF => -2,
+    FOX => -1
+);
 
 class Player{}
 
@@ -6,7 +14,7 @@ class LiveStock{}
 
 sub roll12 {
     return rand * 12;
-    }
+}
 
 
 class OrangeDice {
@@ -32,7 +40,7 @@ class OrangeDice {
 }
 
 class BlueDice {
- method roll {
+    method roll {
         my $val = roll12;
         if $val < 6 {
             return RABBIT
@@ -60,4 +68,4 @@ class SuperFarmer {
     has BlueDice $.bluedice = BlueDice.new;
 }
 
-say BlueDice.new().roll;
+say BlueDice.new().roll.value;
