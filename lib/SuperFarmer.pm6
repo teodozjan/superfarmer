@@ -78,7 +78,17 @@ class Player {
     has Int %animals;
     has TradeStrategy $tradeStrategy;  
     
-    method trade(LiveStock){}
+    method trade(LiveStock){
+        #stub
+            %animals<RABBIT> = 1;
+            %animals<SHEEP>  = 1;
+            %animals<PIG>    = 1;
+            %animals<COW>    = 1;
+            %animals<HORSE>  = 1;
+            
+
+
+    }
     method reproduce(OrangeDice $od, BlueDice $bd, LiveStock $herd){
         my $bluesym = $od.roll;
         my $orangesym = $bd.roll;
@@ -87,16 +97,16 @@ class Player {
 #todo herd update!
         if $orangesym == $bluesym {
             say "Double..." ~ $orangesym;
-            my $offspring = (%animals{$orangesym} + 2) / 2;
+            my $offspring = ((%animals{$orangesym} + 2) / 2).Int;
             %animals{$orangesym} += $offspring;
         } else {
             say "Orange... " ~ $orangesym;
             say "Blue..." ~ $bluesym;
 
-            my $offspringblue = (%animals{$bluesym} + 1) / 2;
+            my $offspringblue = ((%animals{$bluesym} + 1) / 2).Int;
             %animals{$bluesym} += $offspringblue;
 
-            my $offspringorange = (%animals{$orangesym} + 1) / 2;
+            my $offspringorange = ((%animals{$orangesym} + 1) / 2).Int;
             %animals{$orangesym} += $offspringorange;
         }
         
@@ -127,6 +137,7 @@ class Player {
     }
 
     method hasWon {
+        say %animals;
         %animals<HORSE>     > 0
         && %animals<RABBIT> > 0
         && %animals<SHEEP>  > 0
@@ -147,10 +158,13 @@ class SuperFarmer {
     has BlueDice $.bluedice = BlueDice.new;
 
     method play-until-winner {
+        @.players.push(Player.new);
         for 1..100 {
             for @.players -> $player {
                 $player.trade($.livestock);
                 $player.reproduce($.orangedice, $.bluedice, $.livestock);
+
+                return $player if $player.hasWon;
             }
         }
 
