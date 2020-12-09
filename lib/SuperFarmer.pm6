@@ -64,8 +64,12 @@ class BlueDice {
     }
 }
 
+role TradeStrategy { }
 
-role Player {
+
+class Player {
+    has TradeStrategy @tradeStrategy;
+    
     has @rabbits;
     has @sheeps;
     has @swines;
