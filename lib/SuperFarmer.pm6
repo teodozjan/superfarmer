@@ -125,6 +125,14 @@ class Player {
             }
         }
     }
+
+    method hasWon {
+        %animals<HORSE>     > 0
+        && %animals<RABBIT> > 0
+        && %animals<SHEEP>  > 0
+        && %animals<PIG>    > 0
+        && %animals<COW>    > 0;
+    }
 }
 
 
