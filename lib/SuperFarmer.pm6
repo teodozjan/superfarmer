@@ -90,8 +90,8 @@ class Player {
 
     }
     method reproduce(OrangeDice $od, BlueDice $bd, LiveStock $herd){
-        my $bluesym = $od.roll;
-        my $orangesym = $bd.roll;
+        my $bluesym = $bd.roll;
+        my $orangesym = $od.roll;
 
 
 #todo herd update!
@@ -102,15 +102,19 @@ class Player {
         } else {
             say "Orange... " ~ $orangesym;
             say "Blue..." ~ $bluesym;
+            if $bluesym != WOLF {
+                my $offspringblue = ((%animals{$bluesym} + 1) / 2).Int;
+                %animals{$bluesym} += $offspringblue;
+            }
 
-            my $offspringblue = ((%animals{$bluesym} + 1) / 2).Int;
-            %animals{$bluesym} += $offspringblue;
-
-            my $offspringorange = ((%animals{$orangesym} + 1) / 2).Int;
-            %animals{$orangesym} += $offspringorange;
+            if $orangesym != FOX {
+                my $offspringorange = ((%animals{$orangesym} + 1) / 2).Int;
+                %animals{$orangesym} += $offspringorange;
+            }
         }
         
         if $bluesym == WOLF {
+            %animals<SMALL_DOG> = 0;
             print "Wolf came...";
             if %animals<BIG_DOG> < 1 {
                 %animals<RABBIT> = 0;
@@ -125,8 +129,9 @@ class Player {
         }
 
         if $orangesym == FOX {
+            %animals<BIG_DOG> = 0;
             print "Fox came...";
-            if %animals<BIG_DOG> < 1 {
+            if %animals<SMALL_DOG> < 1 {
                 %animals<RABBIT> = 0;
                 say "animals lost";
             } else {
