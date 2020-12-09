@@ -94,11 +94,11 @@ role Player {
     method gist {
         return  colored("DOG", "bold") ~ ":" ~ colored(%!animals<SMALL_DOG>.Str, "yellow") ~ "("
         ~ colored(%!animals<BIG_DOG>.Str, "red") ~ ") | "
-        ~ RABBIT  ~ ":" ~ %!animals<RABBIT>  ~ " "
-        ~ SHEEP   ~ ":" ~ %!animals<SHEEP>   ~ " "
-        ~ PIG     ~ ":" ~ %!animals<PIG>     ~ " "
-        ~ COW     ~ ":" ~ %!animals<COW>     ~ " "
-        ~ HORSE   ~ ":" ~ %!animals<HORSE>;
+        ~ colored("RABBIT", "bold")  ~ ":" ~ %!animals<RABBIT>  ~ " "
+        ~ colored("SHEEP", "bold")   ~ ":" ~ %!animals<SHEEP>   ~ " "
+        ~ colored("PIG", "bold")     ~ ":" ~ %!animals<PIG>     ~ " "
+        ~ colored("COW", "bold")      ~ ":" ~ %!animals<COW>     ~ " "
+        ~ colored("HORSE", "bold")   ~ ":" ~ %!animals<HORSE>;
   }
     
     method reproduce(OrangeDice $od, BlueDice $bd, LiveStock $herd){
