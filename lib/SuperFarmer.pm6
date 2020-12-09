@@ -92,12 +92,12 @@ role Player {
  
 
     method gist {
-        return  "DOG" ~ ":" ~ %!animals<SMALL_DOG> ~ "("
-        ~ %!animals<BIG_DOG> ~ ") | "
+        return  colored("DOG", "bold") ~ ":" ~ colored(%!animals<SMALL_DOG>.Str, "yellow") ~ "("
+        ~ colored(%!animals<BIG_DOG>.Str, "red") ~ ") | "
         ~ RABBIT  ~ ":" ~ %!animals<RABBIT>  ~ " "
         ~ SHEEP   ~ ":" ~ %!animals<SHEEP>   ~ " "
         ~ PIG     ~ ":" ~ %!animals<PIG>     ~ " "
-        ~ COW     ~ ":" ~ %!animals<COW>     ~ " ";
+        ~ COW     ~ ":" ~ %!animals<COW>     ~ " "
         ~ HORSE   ~ ":" ~ %!animals<HORSE>;
   }
     
@@ -175,27 +175,27 @@ Simplest of them all
 class DumbProtectivePlayer does Player {
     
     method trade(LiveStock $lv){
-        if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 1 {
+        if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
             say "Buying small dog";
             %!animals<SMALL_DOG> += 1;
             %!animals<SHEEP>     -= 1;
-        } elsif %!animals<BIG_DOG> < 1 && %!animals<COW> > 1 {
+        } elsif %!animals<BIG_DOG> < 1 && %!animals<COW> > 0 {
             say "Buying big dog";
             %!animals<BIG_DOG> += 1;
             %!animals<COW> -=  1;
-        } elsif %!animals<HORSE> < 1 && %!animals<COW> > 2 {
+        } elsif %!animals<HORSE> < 1 && %!animals<COW> > 1 {
             say "Buying horse";
             %!animals<COW>   -= 2;
             %!animals<HORSE> += 1;
-        } elsif %!animals<PIG> > 3 {
+        } elsif %!animals<PIG> > 2 {
             say "Buying cow";
             %!animals<PIG> -= 3;
             %!animals<COW> += 1;
-        } elsif %!animals<SHEEP> > 2 {
+        } elsif %!animals<SHEEP> > 1 {
             say "Buying pig";
             %!animals<SHEEP> -= 2;
             %!animals<PIG>   += 1;
-        } elsif %!animals<RABBIT> > 6 {
+        } elsif %!animals<RABBIT> > 5 {
             say "Buying sheep";
             %!animals<RABBIT> -= 6;
             %!animals<SHEEP>  += 1;
