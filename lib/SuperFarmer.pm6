@@ -77,7 +77,13 @@ role TradeStrategy { }
 class Player {
     has Int %animals;
     has TradeStrategy $tradeStrategy;  
-    
+
+
+    submethod BUILD {
+        %animals<SMALL_DOG> = 0;
+        %animals<BIG_DOG> = 0;
+    }
+        
     method trade(LiveStock){
         #stub
             %animals<RABBIT> = 1;
@@ -101,7 +107,7 @@ class Player {
             %animals{$orangesym} += $offspring;
         } else {
             say "Orange... " ~ $orangesym;
-            say "Blue..." ~ $bluesym;
+            say "Blue... " ~ $bluesym;
             if $bluesym != WOLF {
                 my $offspringblue = ((%animals{$bluesym} + 1) / 2).Int;
                 %animals{$bluesym} += $offspringblue;
@@ -114,26 +120,25 @@ class Player {
         }
         
         if $bluesym == WOLF {
-            %animals<SMALL_DOG> = 0;
+            
             print "Wolf came...";
             if %animals<BIG_DOG> < 1 {
                 %animals<RABBIT> = 0;
                 %animals<SHEEP>  = 0;
                 %animals<PIG>    = 0;
                 %animals<COW>    = 0;
-                say "animals lost";
+                say "many animals lost";
             } else {
                 %animals<BIG_DOG>--;
                 say "big dog lost";
             }
         }
 
-        if $orangesym == FOX {
-            %animals<BIG_DOG> = 0;
+        if $orangesym == FOX {           
             print "Fox came...";
             if %animals<SMALL_DOG> < 1 {
                 %animals<RABBIT> = 0;
-                say "animals lost";
+                say "all rabbits lost";
             } else {
                 %animals<SMALL_DOG>--;
                 say "small dog lost";
