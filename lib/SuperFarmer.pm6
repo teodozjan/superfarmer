@@ -1,3 +1,6 @@
+use Terminal::ANSIColor;
+
+
 enum Animals(
     RABBIT => 1,
     SHEEP  => 6,
@@ -24,7 +27,7 @@ class LiveStock {
         %animals<SMALL_DOG> = 4;
         %animals<BIG_DOG>   = 2;
         
-        say %animals;
+        say "Initializing herd";
     }    
 }
 
@@ -71,30 +74,33 @@ class BlueDice {
     }
 }
 
-role TradeStrategy { }
-
-
 class Player {
     has Int %animals;
-    has TradeStrategy $tradeStrategy;  
-
 
     submethod BUILD {
         %animals<SMALL_DOG> = 0;
         %animals<BIG_DOG> = 0;
+
+        %animals<RABBIT> = 0;
+        %animals<SHEEP>  = 0;
+        %animals<PIG>    = 0;
+        %animals<COW>    = 0;
+        %animals<HORSE>  = 0;
     }
         
-    method trade(LiveStock){
-        #stub
-            %animals<RABBIT> = 1;
-            %animals<SHEEP>  = 1;
-            %animals<PIG>    = 1;
-            %animals<COW>    = 1;
-            %animals<HORSE>  = 1;
-            
+    method trade(LiveStock){}
+ 
 
-
-    }
+    method gist {
+        return  "DOG" ~ ":" ~ %animals<SMALL_DOG> ~ "("
+        ~ %animals<BIG_DOG> ~ ") | "
+        ~ RABBIT  ~ ":" ~ %animals<RABBIT>  ~ " "
+        ~ SHEEP   ~ ":" ~ %animals<SHEEP>   ~ " "
+        ~ PIG     ~ ":" ~ %animals<PIG>     ~ " "
+        ~ COW     ~ ":" ~ %animals<COW>     ~ " ";
+        ~ HORSE   ~ ":" ~ %animals<HORSE>;
+  }
+    
     method reproduce(OrangeDice $od, BlueDice $bd, LiveStock $herd){
         my $bluesym = $bd.roll;
         my $orangesym = $od.roll;
@@ -106,8 +112,7 @@ class Player {
             my $offspring = ((%animals{$orangesym} + 2) / 2).Int;
             %animals{$orangesym} += $offspring;
         } else {
-            say "Orange... " ~ $orangesym;
-            say "Blue... " ~ $bluesym;
+            say "Orange... " ~ $orangesym ~ " Blue... " ~ $bluesym;
             if $bluesym != WOLF {
                 my $offspringblue = ((%animals{$bluesym} + 1) / 2).Int;
                 %animals{$bluesym} += $offspringblue;
@@ -147,7 +152,7 @@ class Player {
     }
 
     method hasWon {
-        say %animals;
+        say self;
         %animals<HORSE>     > 0
         && %animals<RABBIT> > 0
         && %animals<SHEEP>  > 0
@@ -180,6 +185,23 @@ class SuperFarmer {
 
         die "Turn limit exceeded";
     }
+}
+
+
+=begin pod
+
+=head1 ModelDumpProtectiveStrategy
+
+Simplest of them all
+
+=item Buys dogs at priority
+=item Buys biggest animal can afford.
+=item Only trades lower level animal.
+
+=end pod
+class DumbProtectivePlayer is Player {
+
+
 }
 
 #say BlueDice.new().roll;
