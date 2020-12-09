@@ -137,8 +137,19 @@ class SuperFarmer {
     has LiveStock $.livestock = LiveStock.new;
     has OrangeDice $.orangedice= OrangeDice.new;
     has BlueDice $.bluedice = BlueDice.new;
+
+    method play-until-winner {
+        for 1..100 {
+            for @.players -> $player {
+                $player.trade($.livestock);
+                $player.reproduce($.orangedice, $.bluedice, $.livestock);
+            }
+        }
+
+        die "Turn limit exceeded";
+    }
 }
 
-say BlueDice.new().roll;
-say OrangeDice.new().roll;
-say SuperFarmer.new;
+#say BlueDice.new().roll;
+#say OrangeDice.new().roll;
+say SuperFarmer.new().play-until-winner;
