@@ -16,15 +16,15 @@ class LiveStock {
     has Int %animals;
 
     submethod BUILD {
-    %animals<RABBIT> = 60;
-    %animals<SHEEP>  = 24;
-    %animals<PIG>  = 20;
-    %animals<HORSE>  = 6;
+        %animals<RABBIT> = 60;
+        %animals<SHEEP>  = 24;
+        %animals<PIG>  = 20;
+        %animals<HORSE>  = 6;
 
-    %animals<SMALL_DOG> = 4;
-    %animals<BIG_DOG>   = 2;
-    
-    say %animals;
+        %animals<SMALL_DOG> = 4;
+        %animals<BIG_DOG>   = 2;
+        
+        say %animals;
     }    
 }
 
@@ -76,10 +76,55 @@ role TradeStrategy { }
 
 class Player {
     has Int %animals;
-    has TradeStrategy @tradeStrategy;  
+    has TradeStrategy $tradeStrategy;  
     
     method trade(LiveStock){}
-    method reproduce(OrangeDice, BlueDice, LiveStock){}
+    method reproduce(OrangeDice $od, BlueDice $bd, LiveStock $herd){
+        my $bluesym = $od.roll;
+        my $orangesym = $bd.roll;
+
+
+#todo herd update!
+        if $orangesym == $bluesym {
+            say "Double..." ~ $orangesym;
+            my $offspring = (%animals{$orangesym} + 2) / 2;
+            %animals{$orangesym} += $offspring;
+        } else {
+            say "Orange... " ~ $orangesym;
+            say "Blue..." ~ $bluesym;
+
+            my $offspringblue = (%animals{$bluesym} + 1) / 2;
+            %animals{$bluesym} += $offspringblue;
+
+            my $offspringorange = (%animals{$orangesym} + 1) / 2;
+            %animals{$orangesym} += $offspringorange;
+        }
+        
+        if $bluesym == WOLF {
+            print "Wolf came...";
+            if %animals<BIG_DOG> < 1 {
+                %animals<RABBIT> = 0;
+                %animals<SHEEP>  = 0;
+                %animals<PIG>    = 0;
+                %animals<COW>    = 0;
+                say "animals lost";
+            } else {
+                %animals<BIG_DOG>--;
+                say "big dog lost";
+            }
+        }
+
+        if $orangesym == FOX {
+            print "Fox came...";
+            if %animals<BIG_DOG> < 1 {
+                %animals<RABBIT> = 0;
+                say "animals lost";
+            } else {
+                %animals<SMALL_DOG>--;
+                say "small dog lost";
+            }
+        }
+    }
 }
 
 
