@@ -92,7 +92,7 @@ role Player {
  
 
     method gist {
-        return  colored("DOG", "bold") ~ ":" ~ colored(%!animals<SMALL_DOG>.Str, "yellow") ~ "("
+        return  self ~ colored("DOG", "bold") ~ ":" ~ colored(%!animals<SMALL_DOG>.Str, "yellow") ~ "("
         ~ colored(%!animals<BIG_DOG>.Str, "red") ~ ") | "
         ~ colored("RABBIT", "bold")  ~ ":" ~ %!animals<RABBIT>  ~ " "
         ~ colored("SHEEP", "bold")   ~ ":" ~ %!animals<SHEEP>   ~ " "
@@ -108,11 +108,11 @@ role Player {
 
 #todo herd update!
         if $orangesym == $bluesym {
-            say "Double..." ~ $orangesym;
+            #say "Double..." ~ $orangesym;
             my $offspring = ((%!animals{$orangesym} + 2) / 2).Int;
             %!animals{$orangesym} += $offspring;
         } else {
-            say "Orange... " ~ $orangesym ~ " Blue... " ~ $bluesym;
+            #say "Orange... " ~ $orangesym ~ " Blue... " ~ $bluesym;
             if $bluesym != WOLF {
                 my $offspringblue = ((%!animals{$bluesym} + 1) / 2).Int;
                 %!animals{$bluesym} += $offspringblue;
@@ -175,6 +175,7 @@ Simplest of them all
 class DumbProtectivePlayer does Player {
     
     method trade(LiveStock $lv){
+        
         if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
             say "Buying small dog";
             %!animals<SMALL_DOG> += 1;
@@ -203,6 +204,74 @@ class DumbProtectivePlayer does Player {
     }
 }
 
+
+=begin pod
+
+Buy as fast as possible
+
+=end pod
+class EagerProtectivePlayer does Player {
+    
+    method trade(LiveStock $lv){
+        print self;
+        if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
+            say "Buying small dog";
+            %!animals<SMALL_DOG> += 1;
+            %!animals<SHEEP>     -= 1;
+        } elsif %!animals<BIG_DOG> < 1 && %!animals<COW> > 0 {
+            say "Buying big dog";
+            %!animals<BIG_DOG> += 1;
+            %!animals<COW> -=  1;
+        } elsif %!animals<RABBIT> > 6 {
+            say "Buying sheep";
+            %!animals<RABBIT> -= 6;
+            %!animals<SHEEP>  += 1;
+        } elsif %!animals<SHEEP> > 2 {
+            say "Buying pig";
+            %!animals<SHEEP> -= 2;
+            %!animals<PIG>   += 1;
+        } elsif %!animals<PIG> > 3 {
+            say "Buying cow";
+            %!animals<PIG> -= 3;
+            %!animals<COW> += 1;
+        } elsif %!animals<HORSE> < 1 && %!animals<COW> > 2 {
+            say "Buying horse";
+            %!animals<COW>   -= 2;
+            %!animals<HORSE> += 1;
+        }
+    }
+}
+class Trade{
+    has Animals $.what;
+    has Animals %.stock;
+
+    method buy(Animals $a){
+        $!what = $a;
+        return self;
+    }
+
+    method with(Animals %stock){
+        %!stock = %stock;
+        return self;
+    }
+
+    method by(Animals %ls){
+        if %ls{$!what} > 0 {
+            given $!what {
+                when SHEEP {
+                    %!stock{SHEEP} += 1;
+                    %!stock{RABBIT} -= 6;
+                    
+                    %ls{SHEEP} -=1;
+                    %ls{RABBIT} += 6;
+                }
+                default {die;}
+            }
+        }
+    }
+
+}
+
 sub roll12 {
     return rand * 12;
 }
@@ -215,6 +284,7 @@ class SuperFarmer {
 
     method play-until-winner {
         @.players.push(DumbProtectivePlayer.new);
+        @.players.push(EagerProtectivePlayer.new);
         for 1..100 -> $i {
             for @.players -> $player {
                 $player.trade($.livestock);
