@@ -12,13 +12,18 @@ enum Animals(
 );
 
 class LiveStock {
-    has @rabbits = RABBIT x 60;
-    has @sheeps =  SHEEP x 24;
-    has @swines = SWINE x 20;
-    has @horses = HORSE x 6;
+    
+    has Int %animals;
 
-    has @small_dogs = SMALL_DOG x 4;
-    has @big_dogs = BIG_DOG x 2;
+    submethod BUILD {
+    %animals<RABBIT> = 60;
+    %animals<SHEEP>  = 24;
+    %animals<SWINE>  = 20;
+    %animals<HORSE>  = 6;
+
+    %animals<SMALL_DOG> = 4;
+    %animals<BIG_DOG>   = 2;
+    }    
 }
 
 class OrangeDice {
@@ -68,20 +73,12 @@ role TradeStrategy { }
 
 
 class Player {
-    has TradeStrategy @tradeStrategy;
-    
-    has @rabbits;
-    has @sheeps;
-    has @swines;
-    has @horses;
-
-    has @small_dogs;
-    has @big_dogs;
+    has Int %animals;
+    has TradeStrategy @tradeStrategy;  
     
     method trade(LiveStock){}
     method reproduce(OrangeDice, BlueDice, LiveStock){}
 }
-
 
 
 sub roll12 {
@@ -97,3 +94,4 @@ class SuperFarmer {
 
 say BlueDice.new().roll;
 say OrangeDice.new().roll;
+say SuperFarmer.new;
