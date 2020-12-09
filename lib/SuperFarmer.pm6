@@ -1,7 +1,7 @@
 enum Animals(
     RABBIT => 1,
     SHEEP  => 6,
-    SWINE  => 6*2,
+    PIG  => 6*2,
     COW    => 6*2*3,
     HORSE  => 6*2*3*2,
     WOLF   => -2,
@@ -18,11 +18,13 @@ class LiveStock {
     submethod BUILD {
     %animals<RABBIT> = 60;
     %animals<SHEEP>  = 24;
-    %animals<SWINE>  = 20;
+    %animals<PIG>  = 20;
     %animals<HORSE>  = 6;
 
     %animals<SMALL_DOG> = 4;
     %animals<BIG_DOG>   = 2;
+    
+    say %animals;
     }    
 }
 
@@ -37,7 +39,7 @@ class OrangeDice {
             return SHEEP        
         }
         elsif $val < 10 {
-            return SWINE
+            return PIG
         }
         elsif $val < 11 {
             return HORSE
@@ -58,7 +60,7 @@ class BlueDice {
             return SHEEP        
         }
         elsif $val < 10 {
-            return SWINE
+            return PIG
         }
         elsif $val < 11 {
             return COW
