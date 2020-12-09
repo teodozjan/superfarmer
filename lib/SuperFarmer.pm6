@@ -11,7 +11,7 @@ enum Animals(
     BIG_DOG   => 6*2*3
 );
 
-class LiveStock{
+class LiveStock {
     has @rabbits = RABBIT x 60;
     has @sheeps =  SHEEP x 24;
     has @swines = SWINE x 20;
@@ -20,17 +20,6 @@ class LiveStock{
     has @small_dogs = SMALL_DOG x 4;
     has @big_dogs = BIG_DOG x 2;
 }
-role Player{
-    method trade;
-    met
-}
-
-
-
-sub roll12 {
-    return rand * 12;
-}
-
 
 class OrangeDice {
 
@@ -73,7 +62,26 @@ class BlueDice {
             return WOLF
         }
     }
+}
 
+
+role Player {
+    has @rabbits;
+    has @sheeps;
+    has @swines;
+    has @horses;
+
+    has @small_dogs;
+    has @big_dogs;
+    
+    method trade(LiveStock){}
+    method reproduce(OrangeDice, BlueDice, LiveStock){}
+}
+
+
+
+sub roll12 {
+    return rand * 12;
 }
 
 class SuperFarmer {
