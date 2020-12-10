@@ -58,30 +58,30 @@ class BlueDice {
 }
 
 role Player {
-    has Int %.animals;
+    has Int %.player_animals;
 
     submethod BUILD {
-        %!animals<SMALL_DOG> = 0;
-        %!animals<BIG_DOG> = 0;
+        %!player_animals<SMALL_DOG> = 0;
+        %!player_animals<BIG_DOG> = 0;
 
-        %!animals<RABBIT> = 0;
-        %!animals<SHEEP>  = 0;
-        %!animals<PIG>    = 0;
-        %!animals<COW>    = 0;
-        %!animals<HORSE>  = 0;
+        %!player_animals<RABBIT> = 0;
+        %!player_animals<SHEEP>  = 0;
+        %!player_animals<PIG>    = 0;
+        %!player_animals<COW>    = 0;
+        %!player_animals<HORSE>  = 0;
     }
         
-    method trade(Int %animals){}
+    method trade(Int %animal_bank){}
  
 
     method gist {
-        return  self ~ colored("DOG", "bold") ~ ":" ~ colored(%!animals<SMALL_DOG>.Str, "yellow") ~ "("
-        ~ colored(%!animals<BIG_DOG>.Str, "red") ~ ") | "
-        ~ colored("RABBIT", "bold")  ~ ":" ~ %!animals<RABBIT>  ~ " "
-        ~ colored("SHEEP", "bold")   ~ ":" ~ %!animals<SHEEP>   ~ " "
-        ~ colored("PIG", "bold")     ~ ":" ~ %!animals<PIG>     ~ " "
-        ~ colored("COW", "bold")      ~ ":" ~ %!animals<COW>     ~ " "
-        ~ colored("HORSE", "bold")   ~ ":" ~ %!animals<HORSE>;
+        return  self ~ colored("DOG", "bold") ~ ":" ~ colored(%!player_animals<SMALL_DOG>.Str, "yellow") ~ "("
+        ~ colored(%!player_animals<BIG_DOG>.Str, "red") ~ ") | "
+        ~ colored("RABBIT", "bold")  ~ ":" ~ %!player_animals<RABBIT>  ~ " "
+        ~ colored("SHEEP", "bold")   ~ ":" ~ %!player_animals<SHEEP>   ~ " "
+        ~ colored("PIG", "bold")     ~ ":" ~ %!player_animals<PIG>     ~ " "
+        ~ colored("COW", "bold")      ~ ":" ~ %!player_animals<COW>     ~ " "
+        ~ colored("HORSE", "bold")   ~ ":" ~ %!player_animals<HORSE>;
   }
     
     method reproduce(OrangeDice $od, BlueDice $bd, Int %herd){
@@ -92,43 +92,43 @@ role Player {
 #todo herd update!
         if $orangesym == $bluesym {
             #say "Double..." ~ $orangesym;
-            my $offspring = ((%!animals{$orangesym} + 2) / 2).Int;
-            %!animals{$orangesym} += $offspring;
+            my $offspring = ((%!player_animals{$orangesym} + 2) / 2).Int;
+            %!player_animals{$orangesym} += $offspring;
         } else {
             #say "Orange... " ~ $orangesym ~ " Blue... " ~ $bluesym;
             if $bluesym != WOLF {
-                my $offspringblue = ((%!animals{$bluesym} + 1) / 2).Int;
-                %!animals{$bluesym} += $offspringblue;
+                my $offspringblue = ((%!player_animals{$bluesym} + 1) / 2).Int;
+                %!player_animals{$bluesym} += $offspringblue;
             }
 
             if $orangesym != FOX {
-                my $offspringorange = ((%!animals{$orangesym} + 1) / 2).Int;
-                %!animals{$orangesym} += $offspringorange;
+                my $offspringorange = ((%!player_animals{$orangesym} + 1) / 2).Int;
+                %!player_animals{$orangesym} += $offspringorange;
             }
         }
         
         if $bluesym == WOLF {
             
             print "Wolf came...";
-            if %!animals<BIG_DOG> < 1 {
-                %!animals<RABBIT> = 0;
-                %!animals<SHEEP>  = 0;
-                %!animals<PIG>    = 0;
-                %!animals<COW>    = 0;
-                say "many animals lost";
+            if %!player_animals<BIG_DOG> < 1 {
+                %!player_animals<RABBIT> = 0;
+                %!player_animals<SHEEP>  = 0;
+                %!player_animals<PIG>    = 0;
+                %!player_animals<COW>    = 0;
+                say "many player_animals lost";
             } else {
-                %!animals<BIG_DOG>--;
+                %!player_animals<BIG_DOG>--;
                 say "big dog lost";
             }
         }
 
         if $orangesym == FOX {           
             print "Fox came...";
-            if %!animals<SMALL_DOG> < 1 {
-                %!animals<RABBIT> = 0;
+            if %!player_animals<SMALL_DOG> < 1 {
+                %!player_animals<RABBIT> = 0;
                 say "all rabbits lost";
             } else {
-                %!animals<SMALL_DOG>--;
+                %!player_animals<SMALL_DOG>--;
                 say "small dog lost";
             }
         }
@@ -136,11 +136,11 @@ role Player {
 
     method hasWon {
         say self;
-        %!animals<HORSE>     > 0
-        && %!animals<RABBIT> > 0
-        && %!animals<SHEEP>  > 0
-        && %!animals<PIG>    > 0
-        && %!animals<COW>    > 0;
+        %!player_animals<HORSE>     > 0
+        && %!player_animals<RABBIT> > 0
+        && %!player_animals<SHEEP>  > 0
+        && %!player_animals<PIG>    > 0
+        && %!player_animals<COW>    > 0;
     }
 }
 
@@ -157,32 +157,32 @@ Simplest of them all
 =end pod
 class DumbProtectivePlayer does Player {
     
-    method trade(Int %lv){
+    method trade(Int %animal_bank){
         
-        if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
+        if %!player_animals<SMALL_DOG> < 1 && %!player_animals<SHEEP> > 0 {
             say "Buying small dog";
-            %!animals<SMALL_DOG> += 1;
-            %!animals<SHEEP>     -= 1;
-        } elsif %!animals<BIG_DOG> < 1 && %!animals<COW> > 0 {
+            %!player_animals<SMALL_DOG> += 1;
+            %!player_animals<SHEEP>     -= 1;
+        } elsif %!player_animals<BIG_DOG> < 1 && %!player_animals<COW> > 0 {
             say "Buying big dog";
-            %!animals<BIG_DOG> += 1;
-            %!animals<COW> -=  1;
-        } elsif %!animals<HORSE> < 1 && %!animals<COW> > 1 {
+            %!player_animals<BIG_DOG> += 1;
+            %!player_animals<COW> -=  1;
+        } elsif %!player_animals<HORSE> < 1 && %!player_animals<COW> > 1 {
             say "Buying horse";
-            %!animals<COW>   -= 2;
-            %!animals<HORSE> += 1;
-        } elsif %!animals<PIG> > 2 {
+            %!player_animals<COW>   -= 2;
+            %!player_animals<HORSE> += 1;
+        } elsif %!player_animals<PIG> > 2 {
             say "Buying cow";
-            %!animals<PIG> -= 3;
-            %!animals<COW> += 1;
-        } elsif %!animals<SHEEP> > 1 {
+            %!player_animals<PIG> -= 3;
+            %!player_animals<COW> += 1;
+        } elsif %!player_animals<SHEEP> > 1 {
             say "Buying pig";
-            %!animals<SHEEP> -= 2;
-            %!animals<PIG>   += 1;
-        } elsif %!animals<RABBIT> > 5 {
+            %!player_animals<SHEEP> -= 2;
+            %!player_animals<PIG>   += 1;
+        } elsif %!player_animals<RABBIT> > 5 {
             say "Buying sheep";
-            %!animals<RABBIT> -= 6;
-            %!animals<SHEEP>  += 1;
+            %!player_animals<RABBIT> -= 6;
+            %!player_animals<SHEEP>  += 1;
         }
     }
 }
@@ -195,32 +195,32 @@ Buy as fast as possible
 =end pod
 class EagerProtectivePlayer does Player {
     
-    method trade(Int %lv){
+    method trade(Int %animal_bank){
         print self;
-        if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
+        if %!player_animals<SMALL_DOG> < 1 && %!player_animals<SHEEP> > 0 {
             say "Buying small dog";
-            %!animals<SMALL_DOG> += 1;
-            %!animals<SHEEP>     -= 1;
-        } elsif %!animals<BIG_DOG> < 1 && %!animals<COW> > 0 {
+            %!player_animals<SMALL_DOG> += 1;
+            %!player_animals<SHEEP>     -= 1;
+        } elsif %!player_animals<BIG_DOG> < 1 && %!player_animals<COW> > 0 {
             say "Buying big dog";
-            %!animals<BIG_DOG> += 1;
-            %!animals<COW> -=  1;
-        } elsif %!animals<RABBIT> > 6 {
+            %!player_animals<BIG_DOG> += 1;
+            %!player_animals<COW> -=  1;
+        } elsif %!player_animals<RABBIT> > 6 {
             say "Buying sheep";
-            %!animals<RABBIT> -= 6;
-            %!animals<SHEEP>  += 1;
-        } elsif %!animals<SHEEP> > 2 {
+            %!player_animals<RABBIT> -= 6;
+            %!player_animals<SHEEP>  += 1;
+        } elsif %!player_animals<SHEEP> > 2 {
             say "Buying pig";
-            %!animals<SHEEP> -= 2;
-            %!animals<PIG>   += 1;
-        } elsif %!animals<PIG> > 3 {
+            %!player_animals<SHEEP> -= 2;
+            %!player_animals<PIG>   += 1;
+        } elsif %!player_animals<PIG> > 3 {
             say "Buying cow";
-            %!animals<PIG> -= 3;
-            %!animals<COW> += 1;
-        } elsif %!animals<HORSE> < 1 && %!animals<COW> > 2 {
+            %!player_animals<PIG> -= 3;
+            %!player_animals<COW> += 1;
+        } elsif %!player_animals<HORSE> < 1 && %!player_animals<COW> > 2 {
             say "Buying horse";
-            %!animals<COW>   -= 2;
-            %!animals<HORSE> += 1;
+            %!player_animals<COW>   -= 2;
+            %!player_animals<HORSE> += 1;
         }
     }
 }
@@ -261,7 +261,7 @@ sub roll12 {
 
 class SuperFarmer {
     has Player @.players;   
-    has OrangeDice $.orangedice= OrangeDice.new;
+    has OrangeDice $.orangedice = OrangeDice.new;
     has BlueDice $.bluedice = BlueDice.new;
 
     has Int %.animal_bank;
