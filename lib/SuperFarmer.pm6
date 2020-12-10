@@ -264,16 +264,16 @@ class SuperFarmer {
     has OrangeDice $.orangedice= OrangeDice.new;
     has BlueDice $.bluedice = BlueDice.new;
 
-    has Int %.animals;
+    has Int %.animal_bank;
 
     submethod BUILD {
-        %!animals<RABBIT> = 60;
-        %!animals<SHEEP>  = 24;
-        %!animals<PIG>  = 20;
-        %!animals<HORSE>  = 6;
+        %!animal_bank<RABBIT> = 60;
+        %!animal_bank<SHEEP>  = 24;
+        %!animal_bank<PIG>  = 20;
+        %!animal_bank<HORSE>  = 6;
 
-        %!animals<SMALL_DOG> = 4;
-        %!animals<BIG_DOG>   = 2;
+        %!animal_bank<SMALL_DOG> = 4;
+        %!animal_bank<BIG_DOG>   = 2;
         
         say "Initializing herd";
     }    
@@ -283,8 +283,8 @@ class SuperFarmer {
         @.players.push(EagerProtectivePlayer.new);
         for 1..100 -> $i {
             for @.players -> $player {
-                $player.trade(%!animals);
-                $player.reproduce($.orangedice, $.bluedice, %!animals);
+                $player.trade(%!animal_bank);
+                $player.reproduce($.orangedice, $.bluedice, %!animal_bank);
 
                 return "Game ended at " ~ $i ~ "turn by player " ~ $player if $player.hasWon;
             }
