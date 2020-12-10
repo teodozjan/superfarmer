@@ -44,19 +44,17 @@ HORSE          2 COWs
 SMALL_DOG      1 SHEEP
 BIG_DOG        1 COW
 
-=head3 Offspring generation
+=head3 Offspring generation and losing animals
 
 Offspring can be generated directly from dices if same symbol is rolled on both.
 New animals are also generated if one symbol is roled but player owns at least one animal.
 Every pair of animal gives one animal including ones on dice
 
-=head4 Losing animals
-
-=head5 FOX
+=head4 FOX
 
 If SMALL_DOG is owned it is removed. Otherwise all RABBITs go back to bank
 
-=head6 WOLF
+=head4 WOLF
 
 If big dog is owned it is removed. Otherwise all animals except SMALL_DOG and HORSEs go back to bank
 
