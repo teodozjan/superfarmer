@@ -14,23 +14,6 @@ enum Animals(
     BIG_DOG   => 6*2*3
 );
 
-class LiveStock {
-    
-    has Int %animals;
-
-    submethod BUILD {
-        %animals<RABBIT> = 60;
-        %animals<SHEEP>  = 24;
-        %animals<PIG>  = 20;
-        %animals<HORSE>  = 6;
-
-        %animals<SMALL_DOG> = 4;
-        %animals<BIG_DOG>   = 2;
-        
-        say "Initializing herd";
-    }    
-}
-
 class OrangeDice {
 
     method roll {
@@ -88,7 +71,7 @@ role Player {
         %!animals<HORSE>  = 0;
     }
         
-    method trade(LiveStock){}
+    method trade(Int %animals){}
  
 
     method gist {
@@ -101,7 +84,7 @@ role Player {
         ~ colored("HORSE", "bold")   ~ ":" ~ %!animals<HORSE>;
   }
     
-    method reproduce(OrangeDice $od, BlueDice $bd, LiveStock $herd){
+    method reproduce(OrangeDice $od, BlueDice $bd, Int %herd){
         my $bluesym = $bd.roll;
         my $orangesym = $od.roll;
 
@@ -174,7 +157,7 @@ Simplest of them all
 =end pod
 class DumbProtectivePlayer does Player {
     
-    method trade(LiveStock $lv){
+    method trade(Int %lv){
         
         if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
             say "Buying small dog";
@@ -212,7 +195,7 @@ Buy as fast as possible
 =end pod
 class EagerProtectivePlayer does Player {
     
-    method trade(LiveStock $lv){
+    method trade(Int %lv){
         print self;
         if %!animals<SMALL_DOG> < 1 && %!animals<SHEEP> > 0 {
             say "Buying small dog";
@@ -277,18 +260,31 @@ sub roll12 {
 }
 
 class SuperFarmer {
-    has Player @.players;
-    has LiveStock $.livestock = LiveStock.new;
+    has Player @.players;   
     has OrangeDice $.orangedice= OrangeDice.new;
     has BlueDice $.bluedice = BlueDice.new;
+
+    has Int %.animals;
+
+    submethod BUILD {
+        %!animals<RABBIT> = 60;
+        %!animals<SHEEP>  = 24;
+        %!animals<PIG>  = 20;
+        %!animals<HORSE>  = 6;
+
+        %!animals<SMALL_DOG> = 4;
+        %!animals<BIG_DOG>   = 2;
+        
+        say "Initializing herd";
+    }    
 
     method play-until-winner {
         @.players.push(DumbProtectivePlayer.new);
         @.players.push(EagerProtectivePlayer.new);
         for 1..100 -> $i {
             for @.players -> $player {
-                $player.trade($.livestock);
-                $player.reproduce($.orangedice, $.bluedice, $.livestock);
+                $player.trade(%!animals);
+                $player.reproduce($.orangedice, $.bluedice, %!animals);
 
                 return "Game ended at " ~ $i ~ "turn by player " ~ $player if $player.hasWon;
             }
