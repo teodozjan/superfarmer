@@ -69,7 +69,7 @@ If SMALL_DOG is owned it is removed. Otherwise all RABBITs go back to bank
 
 =head4 WOLF
 
-If big dog is owned it is removed. Otherwise all animals except SMALL_DOG and HORSEs go back to bank
+If big dog is owned it is removed. Otherwise all animals except SMALL_DOGs and HORSEs go back to bank
 
 =end pod
 
@@ -145,7 +145,7 @@ role Player {
         
     method trade(Int %animal_bank){}
  
-
+    
     method gist {
         return  self ~ colored("DOG", "bold") ~ ":" ~ colored(%!player_animals<SMALL_DOG>.Str, "yellow") ~ "("
         ~ colored(%!player_animals<BIG_DOG>.Str, "red") ~ ") | "
@@ -154,9 +154,9 @@ role Player {
         ~ colored("PIG", "bold")     ~ ":" ~ %!player_animals<PIG>     ~ " "
         ~ colored("COW", "bold")      ~ ":" ~ %!player_animals<COW>     ~ " "
         ~ colored("HORSE", "bold")   ~ ":" ~ %!player_animals<HORSE>;
-  }
+    }
     
-    method reproduce(OrangeDice $od, BlueDice $bd, Int %herd){
+    method reproduce(OrangeDice $od, BlueDice $bd, Int %animal_bank){
         my $bluesym = $bd.roll;
         my $orangesym = $od.roll;
 
@@ -165,17 +165,17 @@ role Player {
         if $orangesym == $bluesym {
             #say "Double..." ~ $orangesym;
             my $offspring = ((%!player_animals{$orangesym} + 2) / 2).Int;
-            %!player_animals{$orangesym} += $offspring;
+            %!player_animals{$orangesym} += limit_available($offspring);
         } else {
             #say "Orange... " ~ $orangesym ~ " Blue... " ~ $bluesym;
             if $bluesym != WOLF {
                 my $offspringblue = ((%!player_animals{$bluesym} + 1) / 2).Int;
-                %!player_animals{$bluesym} += $offspringblue;
+                %!player_animals{$bluesym} += limit_available($offspringblue);
             }
 
             if $orangesym != FOX {
                 my $offspringorange = ((%!player_animals{$orangesym} + 1) / 2).Int;
-                %!player_animals{$orangesym} += $offspringorange;
+                %!player_animals{$orangesym} += limit_available($offspringorange);
             }
         }
         
