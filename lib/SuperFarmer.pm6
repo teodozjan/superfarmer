@@ -7,7 +7,6 @@ use Terminal::ANSIColor;
 =head2 Game consists
 
 =item1 animal bank
-
 =table
  RABBITs            60
  SHEEPs             24
@@ -18,12 +17,26 @@ use Terminal::ANSIColor;
 
  
 =item1 orange dice
+=table
+RABBIT               5 sides
+SHEEP                3 sides 
+PIG                  2 sides
+HORSE                1 side
+FOX                  1 side
 
 =item1 blue dice
+=table
+RABBIT               6 sides
+SHEEP                3 sides 
+PIG                  1 sides
+COW                  1 side
+WOLF                 1 side
 
 =item1 player's board
 
 =head2 Turn
+
+Player wins if has at least one  RABBIT, SHEEP, PIG, COW and HORSE
 
 =head3 Trading
 
@@ -37,7 +50,7 @@ Trading options
 Any combinations are allowed. Animals values:
 
 =table
-SHEEP          6 RABBITs
+SHEEP          5 RABBITs
 PIG            2 SHEEPs
 COW            3 PIGs
 HORSE          2 COWs
