@@ -1,5 +1,66 @@
 use Terminal::ANSIColor;
 
+=begin pod
+
+=head1 SUPERFARMER
+
+=head2 Game consists
+
+=item1 animal bank
+
+=table
+ RABBITs            60
+ SHEEPs             24
+ PIGs               20
+ HORSEs              6
+ SMALL_DOGs          4
+ BIG_DOGs            2
+
+ 
+=item1 orange dice
+
+=item1 blue dice
+
+=item1 player's board
+
+=head2 Turn
+
+=head3 Trading
+
+Trade can be done with animal bank or other player.
+Trading options
+
+=item Many to one 
+
+=item One to many
+
+Any combinations are allowed. Animals values:
+
+=table
+SHEEP          6 RABBITs
+PIG            2 SHEEPs
+COW            3 PIGs
+HORSE          2 COWs
+SMALL_DOG      1 SHEEP
+BIG_DOG        1 COW
+
+=head3 Offspring generation
+
+Offspring can be generated directly from dices if same symbol is rolled on both.
+New animals are also generated if one symbol is roled but player owns at least one animal.
+Every pair of animal gives one animal including ones on dice
+
+=head4 Losing animals
+
+=head5 FOX
+
+If SMALL_DOG is owned it is removed. Otherwise all RABBITs go back to bank
+
+=head6 WOLF
+
+If big dog is owned it is removed. Otherwise all animals except SMALL_DOG and HORSEs go back to bank
+
+=end pod
 
 enum Animals(
     RABBIT => 1,
@@ -144,17 +205,10 @@ role Player {
     }
 }
 
-=begin pod
-
-=head1 ModelDumpProtectiveStrategy
-
-Simplest of them all
-
-=item Buys dogs at priority
-=item Buys biggest animal can afford.
-=item Only trades lower level animal.
-
-=end pod
+#| Simplest of them all
+#| * buys dogs at priority
+#| * buys biggest animal can afford.
+#| * only trades lower level animal.
 class DumbProtectivePlayer does Player {
     
     method trade(Int %animal_bank){
