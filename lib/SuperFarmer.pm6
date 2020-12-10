@@ -225,28 +225,28 @@ class EagerProtectivePlayer does Player {
     }
 }
 class Trade{
-    has Animals $.what;
-    has Animals %.stock;
+    has Animals $.animal_to_buy;
+    has Animals %.player_animals;
 
     method buy(Animals $a){
-        $!what = $a;
+        $!animal_to_buy = $a;
         return self;
     }
 
-    method with(Animals %stock){
-        %!stock = %stock;
+    method with(Animals %player_animals){
+        %!player_animals = %player_animals;
         return self;
     }
 
-    method by(Animals %ls){
-        if %ls{$!what} > 0 {
-            given $!what {
+    method by(Animals %animal_bank){
+        if %animal_bank{$!animal_to_buy} > 0 {
+            given $!animal_to_buy {
                 when SHEEP {
-                    %!stock{SHEEP} += 1;
-                    %!stock{RABBIT} -= 6;
+                    %!player_animals{SHEEP} += 1;
+                    %!player_animals{RABBIT} -= 6;
                     
-                    %ls{SHEEP} -=1;
-                    %ls{RABBIT} += 6;
+                    %animal_bank{SHEEP} -=1;
+                    %animal_bank{RABBIT} += 6;
                 }
                 default {die;}
             }
